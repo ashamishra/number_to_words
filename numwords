@@ -1,36 +1,36 @@
-#!/bin/bash 
+#!/bin/bash  
 ar_ones=(Zero  One Two Three Four Five Six Seven Eight Nine)
 ar_twos=(Ten Eleven Tweleve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen)
 ar_tens=(Twenty Thirty Forty Fifty Sixty Seventy Eighty Ninety)
 check_one(){
-	echo ${ar_ones[${dig[-1]}]}  #index -1 => considering last digit of the dig array
+	echo ${ar_ones[${dig[*]: -1}]}  #index -1 => considering last digit of the dig array
 	exit 0
 }
 check_two(){
-   if [ ${dig[-2]} == "0" ]; then
+   if [ ${dig[*]: -2:1} == "0" ]; then
 	check_one
-   elif [ ${dig[-2]} == "1" ]; then    #checks if the digit in ten's place is 1
-	echo ${ar_twos[${dig[-1]}]}
+   elif [ ${dig[*]: -2:1} == "1" ]; then    #checks if the digit in ten's place is 1
+	echo ${ar_twos[${dig[*]: -1}]}
    else
-	echo -n "${ar_tens[$((${dig[-2]} - 2))]} "
- 	if [ ${dig[-1]} != "0" ]; then
-		echo ${ar_ones[${dig[-1]}]}
+	echo -n "${ar_tens[$((${dig[*]: -2:1} - 2))]} "
+ 	if [ ${dig[*]: -1} != "0" ]; then
+		echo ${ar_ones[${dig[*]: -1}]}
 	fi
    fi
 }
 check_three(){
-   if [ ${dig[-3]} != "0" ]; then
-   	echo -n "${ar_ones[${dig[-3]}]} Hundred "
-	if [[ ${dig[-2]} == "0" && ${dig[-1]} == "0" ]]; then
+   if [ ${dig[*]: -3:1} != "0" ]; then
+   	echo -n "${ar_ones[${dig[*]: -3:1}]} Hundred "
+	if [[ ${dig[*]: -2:1} == "0" && ${dig[*]: -1} == "0" ]]; then
 		exit 0
 	fi
    fi	
    check_two
 }
 check_four(){
-   if [ ${dig[-4]} != "0" ]; then
-   	echo -n "${ar_ones[${dig[-4]}]} Thousand "
-	if [[ ${dig[-3]} == "0" && ${dig[-2]} == "0" && ${dig[-1]} == "0" ]]; then
+   if [ ${dig[*]: -4:1} != "0" ]; then
+   	echo -n "${ar_ones[${dig[*]: -4:1}]} Thousand "
+	if [[ ${dig[*]: -3:1} == "0" && ${dig[*]: -2:1} == "0" && ${dig[*]: -1} == "0" ]]; then
 		exit 0
 	fi
    fi
@@ -38,19 +38,21 @@ check_four(){
 }
 echo -n "Input a number(0-9999): "
 read n
+if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+	echo "Not an integer input. Terminating!!"
+	exit 0
+fi
 len=$(($(echo $n | wc -c) - 1))  #calculates length of the input
 for (( i=1; i<=$len; i++ ))
 do
 	dig[$(($i - 1))]=$(echo $n | cut -c $i)    #stores each digit of the input in the dig array, $i-1 is done as array stores values from index 0
 done
 case $len in	# using case statements to check whether the input number is 1-digit,2-digit,3-digit or 4-digit
-1) check_one;; 
-2) check_two;;
-3) check_three;;
-4) check_four;;
-*) echo "Invalid input. Terminating!!";;
+  1) check_one;; 
+  2) check_two;;
+  3) check_three;;
+  4) check_four;;
 esac
-
 
 
 
