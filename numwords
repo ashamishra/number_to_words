@@ -52,13 +52,4 @@ case $len in	# using case statements to check whether the input number is 1-digi
   2) check_two;;
   3) check_three;;
   4) check_four;;
-esac
-
-
-
- 
-
-
- 
-
- 
+esac 
