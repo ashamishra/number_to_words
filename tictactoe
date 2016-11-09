@@ -1,0 +1,62 @@
+r=['-','-','-','-','-','-','-','-','-']
+counter = 1
+def display_board(bval):
+        #lear_output()
+        print('    |   |')
+        print('  '+bval[0]+' | '+bval[1]+' | '+bval[2])
+        print('----|---|----')
+        print('  '+bval[3]+' | '+bval[4]+' | '+bval[5])
+        print('----|---|----')
+        print('  '+bval[6]+' | '+bval[7]+' | '+bval[8])
+        print('    |   |')
+def check_board(player_choice,player):
+        global ar
+        if ar[player_choice-1] == '-' :
+          ar[player_choice-1] == 'X'
+          if player == 2:
+            ar[player_choice-1] == 'O'
+          return True
+        else: return False
+def player_input(player):
+        global counter
+        player_choice = input("Player " + str(player) + " : Enter position(1-9):")
+        check_board_val = check_board(player_choice,player)
+        if not check_board_val:
+                print('Wrong Input. Enter again.')
+                player_input(player)
+        counter = counter + 1
+def check_winner(ar):
+        if (ar[0] == ar[1] == ar[2]) or (ar[0] == ar[3] == ar[6]) or (ar[0] == ar[4] == ar[8]):
+                if ar[0] == 'X':
+                        return 'Player 1 WINS!'
+                else: return 'Player 2 WINS!'
+        elif (ar[6] == ar[7] == ar[8]) or (ar[2] == ar[5] == ar[8]):
+                if ar[8] == 'X':
+                        return 'Player 1 WINS!'
+                else: print('Player 2 WINS!')
+        elif ar[2] == ar[4] == ar[6]:
+                if ar[2] == 'X':
+                        return 'Player 1 WINS!'
+                else: return 'Player 2 WINS!'
+        else: return 'None'
+ar_initial=['1','2','3','4','5','6','7','8','9']
+display_board(ar_initial)
+while(counter<9):
+        player_input(1)
+        display_board(ar)
+        #if counter>4:
+        result=check_winner(ar)
+        if result != 'None':
+           print result
+           break
+               # else: continue
+
+        player_input(2)
+        display_board(ar)
+#       if counter>4:
+        result=check_winner(ar)
+        if result != 'None':
+                print result
+                break
+        else: continue
+
